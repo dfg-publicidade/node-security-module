@@ -90,3 +90,4 @@ class Security {
 }
 
 export default Security;
+export { AccessStatus, TokenSign };

@@ -1,4 +1,5 @@
 import { Request } from 'express';
+import AccessStatus from './enums/accessStatus';
 import TokenSign from './interfaces/tokenSign';
 declare class Security {
     static getToken(key: string, content: any, exp?: string | number): string;
@@ -12,3 +13,4 @@ declare class Security {
     static decodeId(config: any, id: string): number;
 }
 export default Security;
+export { AccessStatus, TokenSign };
