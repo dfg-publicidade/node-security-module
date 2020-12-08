@@ -87,6 +87,10 @@ class Security {
     public static decodeId(config: any, id: string): number {
         return new Hashids(config.security.idEncodeKey, config.security.encodingLength).decode(id)[0] as number;
     }
+
+    public static isValidId(config: any, id: string): boolean {
+        return new Hashids(config.security.idEncodeKey, config.security.encodingLength).isValidId(id);
+    }
 }
 
 export default Security;
