@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -25,24 +16,22 @@ class Security {
         }
         return jsonwebtoken_1.default.sign(payload, key, options);
     }
-    static checkToken(token, key) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return new Promise((resolve, reject) => {
-                jsonwebtoken_1.default.verify(token, key, (err, decoded) => {
-                    if (err) {
-                        const invalidToken = 'INVALID_TOKEN';
-                        reject(invalidToken);
+    static async checkToken(token, key) {
+        return new Promise((resolve, reject) => {
+            jsonwebtoken_1.default.verify(token, key, (err, decoded) => {
+                if (err) {
+                    const invalidToken = 'INVALID_TOKEN';
+                    reject(invalidToken);
+                }
+                else {
+                    if (!decoded || !decoded.ref || !decoded.since) {
+                        const invalidPayload = 'INVALID_PAYLOAD';
+                        reject(invalidPayload);
                     }
                     else {
-                        if (!decoded || !decoded.ref || !decoded.since) {
-                            const invalidPayload = 'INVALID_PAYLOAD';
-                            reject(invalidPayload);
-                        }
-                        else {
-                            resolve(decoded);
-                        }
+                        resolve(decoded);
                     }
-                });
+                }
             });
         });
     }
@@ -58,18 +47,14 @@ class Security {
         }
         return false;
     }
-    static genPassword(config, passwd) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return bcryptjs_1.default.hash(passwd, config.security.saltRounds);
-        });
+    static async genPassword(config, passwd) {
+        return bcryptjs_1.default.hash(passwd, config.security.saltRounds);
     }
     static genPasswordSync(config, passwd) {
         return bcryptjs_1.default.hashSync(passwd, config.security.saltRounds);
     }
-    static checkPassword(passwd, hash) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return bcryptjs_1.default.compare(passwd, hash);
-        });
+    static async checkPassword(passwd, hash) {
+        return bcryptjs_1.default.compare(passwd, hash);
     }
     static checkPasswordSync(passwd, hash) {
         return bcryptjs_1.default.compareSync(passwd, hash);
@@ -79,6 +64,9 @@ class Security {
     }
     static decodeId(config, id) {
         return new hashids_1.default(config.security.idEncodeKey, config.security.encodingLength).decode(id)[0];
+    }
+    static isValidId(config, id) {
+        return new hashids_1.default(config.security.idEncodeKey, config.security.encodingLength).isValidId(id);
     }
 }
 exports.default = Security;
