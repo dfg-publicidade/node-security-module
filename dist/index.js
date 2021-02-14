@@ -48,10 +48,10 @@ class Security {
         return false;
     }
     static async genPassword(config, passwd) {
-        return bcryptjs_1.default.hash(passwd, config.security.saltRounds);
+        return bcryptjs_1.default.hash(passwd, config.saltRounds);
     }
     static genPasswordSync(config, passwd) {
-        return bcryptjs_1.default.hashSync(passwd, config.security.saltRounds);
+        return bcryptjs_1.default.hashSync(passwd, config.saltRounds);
     }
     static async checkPassword(passwd, hash) {
         return bcryptjs_1.default.compare(passwd, hash);
@@ -60,10 +60,10 @@ class Security {
         return bcryptjs_1.default.compareSync(passwd, hash);
     }
     static encodeId(config, id) {
-        return new hashids_1.default(config.security.idEncodeKey, config.security.encodingLength).encode(id);
+        return new hashids_1.default(config.idEncodeKey, config.encodingLength).encode(id);
     }
     static decodeId(config, id) {
-        return new hashids_1.default(config.security.idEncodeKey, config.security.encodingLength).decode(id)[0];
+        return new hashids_1.default(config.idEncodeKey, config.encodingLength).decode(id)[0];
     }
 }
 exports.default = Security;

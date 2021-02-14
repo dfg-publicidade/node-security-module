@@ -65,11 +65,11 @@ class Security {
     }
 
     public static async genPassword(config: any, passwd: string): Promise<string> {
-        return bcrypt.hash(passwd, config.security.saltRounds);
+        return bcrypt.hash(passwd, config.saltRounds);
     }
 
     public static genPasswordSync(config: any, passwd: string): string {
-        return bcrypt.hashSync(passwd, config.security.saltRounds);
+        return bcrypt.hashSync(passwd, config.saltRounds);
     }
 
     public static async checkPassword(passwd: string, hash: string): Promise<boolean> {
@@ -81,11 +81,11 @@ class Security {
     }
 
     public static encodeId(config: any, id: number): string {
-        return new Hashids(config.security.idEncodeKey, config.security.encodingLength).encode(id);
+        return new Hashids(config.idEncodeKey, config.encodingLength).encode(id);
     }
 
     public static decodeId(config: any, id: string): number {
-        return new Hashids(config.security.idEncodeKey, config.security.encodingLength).decode(id)[0] as number;
+        return new Hashids(config.idEncodeKey, config.encodingLength).decode(id)[0] as number;
     }
 }
 
