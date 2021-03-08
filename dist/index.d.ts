@@ -11,6 +11,7 @@ declare class Security {
     static checkPasswordSync(passwd: string, hash: string): boolean;
     static encodeId(config: any, id: number): string;
     static decodeId(config: any, id: string): number;
+    static isId(config: any, id: string): boolean;
 }
 export default Security;
 export { AccessStatus, TokenSign };

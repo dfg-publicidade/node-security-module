@@ -65,5 +65,8 @@ class Security {
     static decodeId(config, id) {
         return new hashids_1.default(config.idEncodeKey, config.encodingLength).decode(id)[0];
     }
+    static isId(config, id) {
+        return new hashids_1.default(config.idEncodeKey, config.encodingLength).isValidId(id);
+    }
 }
 exports.default = Security;
