@@ -50,20 +50,21 @@ class Security {
     static async genPassword(config, passwd) {
         return bcryptjs_1.default.hash(passwd, config.saltRounds);
     }
-    static genPasswordSync(config, passwd) {
-        return bcryptjs_1.default.hashSync(passwd, config.saltRounds);
-    }
     static async checkPassword(passwd, hash) {
         return bcryptjs_1.default.compare(passwd, hash);
-    }
-    static checkPasswordSync(passwd, hash) {
-        return bcryptjs_1.default.compareSync(passwd, hash);
     }
     static encodeId(config, id) {
         return new hashids_1.default(config.idEncodeKey, config.encodingLength).encode(id);
     }
     static decodeId(config, id) {
-        return new hashids_1.default(config.idEncodeKey, config.encodingLength).decode(id)[0];
+        try {
+            return new hashids_1.default(config.idEncodeKey, config.encodingLength).decode(id)[0];
+        }
+        catch (error) {
+            // eslint-disable-next-line no-console
+            console.error(error);
+            return undefined;
+        }
     }
     static isId(config, id) {
         return new hashids_1.default(config.idEncodeKey, config.encodingLength).isValidId(id);

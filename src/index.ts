@@ -43,7 +43,7 @@ class Security {
         });
     }
 
-    public static testOpenAccess(req: Request, openRoutes: any): boolean {
+    public static testOpenAccess(req: Request, openRoutes: any[]): boolean {
         if (openRoutes) {
             let actionItem: {
                 _id: ObjectId;
@@ -68,16 +68,8 @@ class Security {
         return bcrypt.hash(passwd, config.saltRounds);
     }
 
-    public static genPasswordSync(config: any, passwd: string): string {
-        return bcrypt.hashSync(passwd, config.saltRounds);
-    }
-
     public static async checkPassword(passwd: string, hash: string): Promise<boolean> {
         return bcrypt.compare(passwd, hash);
-    }
-
-    public static checkPasswordSync(passwd: string, hash: string): boolean {
-        return bcrypt.compareSync(passwd, hash);
     }
 
     public static encodeId(config: any, id: number): string {
@@ -85,7 +77,14 @@ class Security {
     }
 
     public static decodeId(config: any, id: string): number {
-        return new Hashids(config.idEncodeKey, config.encodingLength).decode(id)[0] as number;
+        try {
+            return new Hashids(config.idEncodeKey, config.encodingLength).decode(id)[0] as number;
+        }
+        catch (error: any) {
+            // eslint-disable-next-line no-console
+            console.error(error);
+            return undefined;
+        }
     }
 
     public static isId(config: any, id: string): boolean {
