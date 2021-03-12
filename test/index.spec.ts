@@ -20,7 +20,7 @@ describe('index.ts', (): void => {
         console.error = err;
     });
 
-    it('getToken / checkToken', async (): Promise<void> => {
+    it('1. getToken / checkToken', async (): Promise<void> => {
         const key: string = '123456';
         // eslint-disable-next-line no-magic-numbers
         const token: string = Security.getToken(key, { ref: 123, since: new Date() }, 60);
@@ -41,7 +41,7 @@ describe('index.ts', (): void => {
         expect(tokenSign.exp - tokenSign.iat).to.be.eq(60);
     });
 
-    it('getToken / checkToken', async (): Promise<void> => {
+    it('2. getToken / checkToken', async (): Promise<void> => {
         const key: string = '123456';
         // eslint-disable-next-line no-magic-numbers
         const token: string = Security.getToken(key, { ref: 123, since: new Date() });
@@ -59,7 +59,7 @@ describe('index.ts', (): void => {
         expect(tokenSign.iat).to.exist;
     });
 
-    it('getToken / checkToken', async (): Promise<void> => {
+    it('3. getToken / checkToken', async (): Promise<void> => {
         const key: string = '123456';
 
         let tokenError: string;
@@ -73,7 +73,7 @@ describe('index.ts', (): void => {
         expect(tokenError).to.be.eq('INVALID_TOKEN');
     });
 
-    it('getToken / checkToken', async (): Promise<void> => {
+    it('4. getToken / checkToken', async (): Promise<void> => {
         const key: string = '123456';
         // eslint-disable-next-line no-magic-numbers
         const token: string = Security.getToken(key, {});
@@ -89,7 +89,7 @@ describe('index.ts', (): void => {
         expect(tokenError).to.be.eq('INVALID_PAYLOAD');
     });
 
-    it('testOpenAccess', async (): Promise<void> => {
+    it('5. testOpenAccess', async (): Promise<void> => {
         const openRoutes: any = [{
             regex: '^\\/$'
         }];
@@ -105,7 +105,7 @@ describe('index.ts', (): void => {
         } as any, openRoutes)).to.be.true;
     });
 
-    it('genPassword / checkPassword', async (): Promise<void> => {
+    it('6. enPassword / checkPassword', async (): Promise<void> => {
         const hash: string = await Security.genPassword({
             saltRounds: 10
         }, '123456');
@@ -114,7 +114,7 @@ describe('index.ts', (): void => {
         expect(await Security.checkPassword('123456', hash)).to.be.true;
     });
 
-    it('encodeId / isId / decodeId', async (): Promise<void> => {
+    it('7. encodeId / isId / decodeId', async (): Promise<void> => {
         const config: any = {
             idEncodeKey: '123456',
             encodingLength: 10
