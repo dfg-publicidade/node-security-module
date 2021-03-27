@@ -4,6 +4,7 @@ type AccessStatus =
     'BLOCKED_ORGANIZATION' |
     'BLOCKED_BRANCH' |
     'USER_NOT_FOUND' |
+    'NO_SYSTEM_ACCESS' |
     'INVALID_TOKEN' |
     'INVALIDATED_TOKEN' |
     'INVALID_PAYLOAD' |
