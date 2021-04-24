@@ -75,7 +75,6 @@ describe('index.ts', (): void => {
 
     it('4. getToken / checkToken', async (): Promise<void> => {
         const key: string = '123456';
-        // eslint-disable-next-line no-magic-numbers
         const token: string = Security.getToken(key, {});
 
         let tokenError: string;
