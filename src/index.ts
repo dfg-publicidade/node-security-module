@@ -77,18 +77,23 @@ class Security {
     }
 
     public static decodeId(config: any, id: string): number {
-        try {
-            return new Hashids(config.idEncodeKey, config.encodingLength).decode(id)[0] as number;
+        const value: number = new Hashids(config.idEncodeKey, config.encodingLength).decode(id)[0] as number;
+
+        if (!value) {
+            throw new Error(`The provided ID (${id}) is invalid`);
         }
-        catch (error: any) {
-            // eslint-disable-next-line no-console
-            console.error(error);
-            return undefined;
-        }
+
+        return value;
     }
 
     public static isId(config: any, id: string): boolean {
-        return new Hashids(config.idEncodeKey, config.encodingLength).isValidId(id);
+        const hashids: Hashids = new Hashids(config.idEncodeKey, config.encodingLength);
+
+        if (hashids.isValidId(id)) {
+            return hashids.decode(id).length > 0;
+        }
+
+        return false;
     }
 }
 

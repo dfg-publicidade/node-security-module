@@ -57,17 +57,18 @@ class Security {
         return new hashids_1.default(config.idEncodeKey, config.encodingLength).encode(id);
     }
     static decodeId(config, id) {
-        try {
-            return new hashids_1.default(config.idEncodeKey, config.encodingLength).decode(id)[0];
+        const value = new hashids_1.default(config.idEncodeKey, config.encodingLength).decode(id)[0];
+        if (!value) {
+            throw new Error(`The provided ID (${id}) is invalid`);
         }
-        catch (error) {
-            // eslint-disable-next-line no-console
-            console.error(error);
-            return undefined;
-        }
+        return value;
     }
     static isId(config, id) {
-        return new hashids_1.default(config.idEncodeKey, config.encodingLength).isValidId(id);
+        const hashids = new hashids_1.default(config.idEncodeKey, config.encodingLength);
+        if (hashids.isValidId(id)) {
+            return hashids.decode(id).length > 0;
+        }
+        return false;
     }
 }
 exports.default = Security;

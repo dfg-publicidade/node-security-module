@@ -1,25 +1,9 @@
 import { expect } from 'chai';
-import { after, before, describe, it } from 'mocha';
+import { describe, it } from 'mocha';
 import Security, { TokenSign } from '../src';
 
 /* Tests */
 describe('index.ts', (): void => {
-    // eslint-disable-next-line no-console
-    const err: (msg: string) => void = console.error;
-    let logMsg: string = '';
-
-    before(async (): Promise<void> => {
-        // eslint-disable-next-line no-console
-        console.error = (msg: string): void => {
-            logMsg = msg;
-        };
-    });
-
-    after(async (): Promise<void> => {
-        // eslint-disable-next-line no-console
-        console.error = err;
-    });
-
     it('1. getToken / checkToken', async (): Promise<void> => {
         const key: string = '123456';
         // eslint-disable-next-line no-magic-numbers
@@ -121,12 +105,30 @@ describe('index.ts', (): void => {
 
         const hash: string = await Security.encodeId(config, 1);
 
-        expect(await Security.isId(config, '123 345')).to.be.false;
         expect(await Security.isId(config, hash)).to.be.true;
         expect(await Security.decodeId(config, hash)).to.be.eq(1);
 
+        expect(await Security.isId(config, 'invalid id')).to.be.false;
 
-        expect(await Security.decodeId(config, '123 345')).to.be.undefined;
-        expect(logMsg).to.have.property('message').which.contain('is invalid');
+        let tokenError: any;
+        try {
+            expect(await Security.decodeId(config, 'invalid id')).to.be.undefined;
+        }
+        catch (error: any) {
+            tokenError = error;
+        }
+
+        expect(tokenError.message).to.contain('is invalid');
+
+        expect(await Security.isId(config, 'other')).to.be.false;
+
+        try {
+            expect(await Security.decodeId(config, 'other')).to.be.undefined;
+        }
+        catch (error: any) {
+            tokenError = error;
+        }
+
+        expect(tokenError.message).to.contain('is invalid');
     });
 });
