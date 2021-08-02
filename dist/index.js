@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const crypto_1 = __importDefault(require("crypto"));
 const hashids_1 = __importDefault(require("hashids"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 /* Module */
@@ -62,6 +63,14 @@ class Security {
             throw new Error(`The provided ID (${id}) is invalid`);
         }
         return value;
+    }
+    static encode(config, iv, value) {
+        const cipher = crypto_1.default.createCipheriv('aes-256-ctr', config.encodeKey, iv);
+        return Buffer.concat([cipher.update(value), cipher.final()]).toString();
+    }
+    static decode(config, iv, value) {
+        const decipher = crypto_1.default.createDecipheriv('aes-256-ctr', config.encodeKey, iv);
+        return Buffer.concat([decipher.update(value), decipher.final()]).toString();
     }
     static isId(config, id) {
         const hashids = new hashids_1.default(config.idEncodeKey, config.encodingLength);

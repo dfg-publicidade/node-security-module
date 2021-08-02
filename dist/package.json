@@ -20,6 +20,7 @@
     },
     "devDependencies": {
         "@dfgpublicidade/eslint-config": "git+ssh://git@github.com/dfg-publicidade/eslint-config.git",
+        "@types/app-root-path": "^1.2.4",
         "@types/bcryptjs": "^2.4.2",
         "@types/express": "^4.17.12",
         "@types/hashids": "^1.0.32",

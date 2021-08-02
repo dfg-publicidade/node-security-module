@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import crypto from 'crypto';
 import { describe, it } from 'mocha';
 import Security, { TokenSign } from '../src';
 
@@ -130,5 +131,18 @@ describe('index.ts', (): void => {
         }
 
         expect(tokenError.message).to.contain('is invalid');
+    });
+
+    it('8. encode / decode', async (): Promise<void> => {
+        const config: any = {
+            encodeKey: 'vOVH6sdmpNWjRRIqCc7rdxs01lwHzfr3'
+        };
+
+        // eslint-disable-next-line no-magic-numbers
+        const iv: Buffer = crypto.randomBytes(16);
+
+        const secret: string = Security.encode(config, iv, 'test');
+
+        expect(Security.decode(config, iv, secret)).to.be.eq('test');
     });
 });

@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import { Request } from 'express';
 import Hashids from 'hashids';
 import jwt from 'jsonwebtoken';
@@ -84,6 +85,16 @@ class Security {
         }
 
         return value;
+    }
+
+    public static encode(config: any, iv: Buffer, value: string): string {
+        const cipher: crypto.Cipher = crypto.createCipheriv('aes-256-ctr', config.encodeKey, iv);
+        return Buffer.concat([cipher.update(value), cipher.final()]).toString();
+    }
+
+    public static decode(config: any, iv: Buffer, value: string): string {
+        const decipher: crypto.Cipher = crypto.createDecipheriv('aes-256-ctr', config.encodeKey, iv);
+        return Buffer.concat([decipher.update(value), decipher.final()]).toString();
     }
 
     public static isId(config: any, id: string): boolean {
