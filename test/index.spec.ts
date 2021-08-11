@@ -20,11 +20,11 @@ describe('index.ts', (): void => {
         const tokenSign: TokenSign = await Security.checkToken(token, key);
 
         expect(tokenSign).to.exist;
-        expect(tokenSign.ref).to.exist;
+        expect(tokenSign.payload).to.exist;
         // eslint-disable-next-line no-magic-numbers
-        expect(tokenSign.ref.id).to.be.eq('123');
+        expect(tokenSign.payload.id).to.be.eq('123');
         // eslint-disable-next-line no-magic-numbers
-        expect(tokenSign.ref.other).to.be.eq(456);
+        expect(tokenSign.payload.other).to.be.eq(456);
 
         expect(tokenSign.since).to.exist;
         expect(tokenSign.iat).to.exist;
@@ -43,9 +43,9 @@ describe('index.ts', (): void => {
         const tokenSign: TokenSign = await Security.checkToken(token, key);
 
         expect(tokenSign).to.exist;
-        expect(tokenSign.ref).to.exist;
+        expect(tokenSign.payload).to.exist;
         // eslint-disable-next-line no-magic-numbers
-        expect(tokenSign.ref).to.be.eq(123);
+        expect(tokenSign.payload).to.be.eq(123);
 
         expect(tokenSign.since).to.exist;
         expect(tokenSign.iat).to.exist;

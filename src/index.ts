@@ -32,7 +32,7 @@ class Security {
                     reject(invalidToken);
                 }
                 else {
-                    if (!decoded || !decoded.ref || !decoded.since) {
+                    if (!decoded || !decoded.payload || !decoded.since) {
                         const invalidPayload: AccessStatus = 'INVALID_PAYLOAD';
                         reject(invalidPayload);
                     }
