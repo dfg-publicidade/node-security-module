@@ -1,5 +1,5 @@
 interface TokenSign {
-    ref: string;
+    ref: any;
     since: Date | number;
     iat: number;
     exp: number;

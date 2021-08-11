@@ -65,12 +65,12 @@ class Security {
         return value;
     }
     static encode(config, iv, value) {
-        const cipher = crypto_1.default.createCipheriv('aes-256-ctr', config.encodeKey, iv);
-        return Buffer.concat([cipher.update(value), cipher.final()]).toString();
+        const cipher = crypto_1.default.createCipheriv('aes-256-cbc', config.encodeKey, iv);
+        return Buffer.concat([cipher.update(value), cipher.final()]).toString('hex');
     }
     static decode(config, iv, value) {
-        const decipher = crypto_1.default.createDecipheriv('aes-256-ctr', config.encodeKey, iv);
-        return Buffer.concat([decipher.update(value), decipher.final()]).toString();
+        const decipher = crypto_1.default.createDecipheriv('aes-256-cbc', config.encodeKey, iv);
+        return Buffer.concat([decipher.update(value, 'hex'), decipher.final()]).toString();
     }
     static isId(config, id) {
         const hashids = new hashids_1.default(config.idEncodeKey, config.encodingLength);

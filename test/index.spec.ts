@@ -7,8 +7,13 @@ import Security, { TokenSign } from '../src';
 describe('index.ts', (): void => {
     it('1. getToken / checkToken', async (): Promise<void> => {
         const key: string = '123456';
-        // eslint-disable-next-line no-magic-numbers
-        const token: string = Security.getToken(key, { ref: 123, since: new Date() }, 60);
+        const token: string = Security.getToken(key, {
+            ref: {
+                id: '123',
+                other: 456
+            }, since: new Date()
+            // eslint-disable-next-line no-magic-numbers
+        }, 60);
 
         expect(token).to.exist;
 
@@ -17,7 +22,9 @@ describe('index.ts', (): void => {
         expect(tokenSign).to.exist;
         expect(tokenSign.ref).to.exist;
         // eslint-disable-next-line no-magic-numbers
-        expect(tokenSign.ref).to.be.eq(123);
+        expect(tokenSign.ref.id).to.be.eq('123');
+        // eslint-disable-next-line no-magic-numbers
+        expect(tokenSign.ref.other).to.be.eq(456);
 
         expect(tokenSign.since).to.exist;
         expect(tokenSign.iat).to.exist;
