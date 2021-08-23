@@ -8,7 +8,7 @@ describe('index.ts', (): void => {
     it('1. getToken / checkToken', async (): Promise<void> => {
         const key: string = '123456';
         const token: string = Security.getToken(key, {
-            ref: {
+            payload: {
                 id: '123',
                 other: 456
             }, since: new Date()
@@ -36,7 +36,12 @@ describe('index.ts', (): void => {
     it('2. getToken / checkToken', async (): Promise<void> => {
         const key: string = '123456';
         // eslint-disable-next-line no-magic-numbers
-        const token: string = Security.getToken(key, { ref: 123, since: new Date() });
+        const token: string = Security.getToken(key, {
+            payload: {
+                ref: 123
+            },
+            since: new Date()
+        });
 
         expect(token).to.exist;
 
@@ -45,7 +50,9 @@ describe('index.ts', (): void => {
         expect(tokenSign).to.exist;
         expect(tokenSign.payload).to.exist;
         // eslint-disable-next-line no-magic-numbers
-        expect(tokenSign.payload).to.be.eq(123);
+        expect(tokenSign.payload).to.be.deep.eq({
+            ref: 123
+        });
 
         expect(tokenSign.since).to.exist;
         expect(tokenSign.iat).to.exist;
